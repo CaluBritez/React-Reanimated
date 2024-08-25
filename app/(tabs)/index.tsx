@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 const ditto = require('@/assets/images/ditto.jpg');
-const snorlax = require('@/assets/images/snorlax.jpg'); // Asegúrate de usar la imagen correcta para Snorlax
+const snorlax = require('@/assets/images/snorlax.jpg');
 
 export default function HomeScreen() {
     const [isInitialState, setIsInitialState] = useState(true);
@@ -31,7 +31,7 @@ export default function HomeScreen() {
 
     const handlePress = () => {
         if (isInitialState) {
-            // Cambiar el color de fondo con una animación de desvanecimiento
+            // Cambiar el color de fondo
             backgroundColor.value = withTiming('#FF6347', { duration: 500 }); // Nuevo color
             // Desvanecer el título
             titleOpacity.value = withTiming(0, { duration: 500 });
