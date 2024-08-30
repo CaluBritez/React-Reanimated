@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
-const ditto = require('@/assets/images/ditto.jpg');
-const snorlax = require('@/assets/images/snorlax.jpg');
+const ditto = require('@/assets/images/di.jpg');
+const snorlax = require('@/assets/images/sno.jpg');
 
 export default function HomeScreen() {
+
     const [isInitialState, setIsInitialState] = useState(true);
-    const translateY = useSharedValue(-50); // Inicializa fuera de la pantalla
-    const backgroundColor = useSharedValue('#1f245c'); // Color inicial del fondo
-    const titleOpacity = useSharedValue(1); // Opacidad inicial del título
+    const [titleText, setTitleText] = useState('No te duermas!!');
+
+    const translateY = useSharedValue(-50);
+    const backgroundColor = useSharedValue('#CB90C1');
+    const titleOpacity = useSharedValue(1);
 
     useEffect(() => {
-        // Animar a 0 en 500 ms para mostrar el título
-        translateY.value = withTiming(0, { duration: 500 });
+        translateY.value = withTiming(0, { duration: 1000 });
     }, []);
 
     const animatedTitleStyle = useAnimatedStyle(() => {
@@ -31,17 +33,25 @@ export default function HomeScreen() {
 
     const handlePress = () => {
         if (isInitialState) {
-            // Cambiar el color de fondo
-            backgroundColor.value = withTiming('#FF6347', { duration: 500 }); // Nuevo color
+            // Realizar animaciones y cambios de colores
+            backgroundColor.value = withTiming('#00B6B1', { duration: 1000 });
             // Desvanecer el título
-            titleOpacity.value = withTiming(0, { duration: 500 });
+            titleOpacity.value = withTiming(0, { duration: 1000 }, () => {
+                setTitleText('zzzzzzzzz............');
+                titleOpacity.value = withTiming(1, { duration: 1000 });
+            });
+
+
         } else {
             // Revertir cambios al estado inicial
-            backgroundColor.value = withTiming('#1f245c', { duration: 500 }); // Color inicial
+            backgroundColor.value = withTiming('#CB90C1', { duration: 1000 });
             translateY.value = withTiming(-50, { duration: 0 }, () => {
-                translateY.value = withTiming(0, { duration: 500 }); // Reposicionar título
+                translateY.value = withTiming(0, { duration: 1000 });
             });
-            titleOpacity.value = withTiming(1, { duration: 500 });
+            titleOpacity.value = withTiming(1, { duration: 1000 });
+            setTitleText('No te duermas!!');
+
+
         }
         setIsInitialState(!isInitialState);
     };
@@ -49,13 +59,18 @@ export default function HomeScreen() {
     return (
         <Animated.View style={[styles.container, animatedContainerStyle]}>
             <Animated.Text style={[styles.title, animatedTitleStyle]}>
-                Bienvenido a tu Web preferida
+                {titleText}
             </Animated.Text>
 
             <Image source={isInitialState ? ditto : snorlax} style={styles.image} />
 
             <TouchableOpacity style={styles.loginButton} onPress={handlePress}>
-                <Text style={styles.loginButtonText}>{isInitialState ? 'Iniciar' : 'Volver'}</Text>
+                <Text style={[
+                    styles.loginButtonText,
+                    { color: isInitialState ? '#CB90C1' : '#00B6B1' }
+                ]}>
+                    {isInitialState ? 'Dormir' : 'Despertar'}
+                </Text>
             </TouchableOpacity>
         </Animated.View>
     );
@@ -74,18 +89,18 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 20,
         marginTop: 40,
-        color: '#0e88c9',
+        color: 'black',
     },
     loginButton: {
         marginTop: 13,
         padding: 10,
         borderRadius: 5,
         width: '50%',
-        backgroundColor: '#0e88c9',
+        backgroundColor: 'black',
         alignItems: 'center',
     },
     loginButtonText: {
-        color: '#fff',
+        color: '#CB90C1',
         fontSize: 16,
         fontWeight: 'bold',
     },
